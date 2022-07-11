@@ -14,7 +14,7 @@ const inputRace = document.querySelector('.js-input-race');
 const linkNewFormElememt = document.querySelector('.js-button-new-form');
 const labelMesageError = document.querySelector('.js-label-error');
 const input_search_desc = document.querySelector('.js_in_search_desc');
-
+const input_search_race = document.querySelector('.js_in_search_race');
 
 //Objetos con cada gatito
 const kittenData_1 = {
@@ -39,7 +39,7 @@ const kittenData_3 = {
 const kittenDataList = [kittenData_1, kittenData_2, kittenData_3];
 
 //Funciones
-function renderKitten(kittenData) {
+function renderKitten (kittenData) {
     const kitten = `<li class="card">
     <article>
       <img
@@ -57,7 +57,7 @@ function renderKitten(kittenData) {
     return kitten;
 }
 
-function renderKittenList(kittenDataList) {
+function renderKittenList (kittenDataList) {
     listElement.innerHTML = "";
     for (const kittenItem of kittenDataList) {
         listElement.innerHTML += renderKitten(kittenItem);
@@ -65,14 +65,14 @@ function renderKittenList(kittenDataList) {
 }
 
 //Mostrar/ocultar el formulario
-function showNewCatForm() {
+function showNewCatForm () {
     newFormElement.classList.remove('collapsed');
 }
-function hideNewCatForm() {
+function hideNewCatForm () {
     newFormElement.classList.add('collapsed');
 }
 
-function handleClickNewCatForm(event) {
+function handleClickNewCatForm (event) {
     event.preventDefault();
     if (newFormElement.classList.contains('collapsed')) {
         showNewCatForm();
@@ -85,16 +85,16 @@ const resetKittenForm = () => {
     inputDesc.value = '';
     inputPhoto.value = '';
     inputName.value = '';
-    inputRace.value =  '';
+    inputRace.value = '';
 }
 
 
-function addNewKitten(event) {
+function addNewKitten (event) {
     event.preventDefault();
     const valueDesc = inputDesc.value;
     const valuePhoto = inputPhoto.value;
     const valueName = inputName.value;
-    const valueRace =  inputRace.value;
+    const valueRace = inputRace.value;
 
     const newKittenDataObject = {
         image: valuePhoto,
@@ -105,7 +105,7 @@ function addNewKitten(event) {
 
     kittenDataList.push(newKittenDataObject);
     renderKittenList(kittenDataList);
-    
+
     if (valueDesc === "" && valuePhoto === "" && valueName === "") {
         labelMesageError.innerHTML = "Debe rellenar todos los valores";
     } else {
@@ -115,7 +115,7 @@ function addNewKitten(event) {
     }
 }
 //Cancelar la búsqueda de un gatito
-function cancelNewKitten(event) {
+function cancelNewKitten (event) {
     event.preventDefault();
     newFormElement.classList.add("collapsed");
     inputDesc.value = "";
@@ -124,7 +124,7 @@ function cancelNewKitten(event) {
 }
 
 //Filtrar por descripción
-function filterKitten(event) {
+/*function filterKitten(event) {
     event.preventDefault();
     const descrSearchText = input_search_desc.value;
     listElement.innerHTML = "";
@@ -133,8 +133,28 @@ function filterKitten(event) {
             listElement.innerHTML += renderKitten(kittenItem);
         }
     }
-}
+}*/
 
+//filtrar con filter
+function filterKitten (ev) {
+    ev.preventDefault();
+    const descrSearchText = input_search_desc.value;
+    const descrSearchRace = input_search_race.value;
+    listElement.innerHTML = "";
+
+    const kittenListFiltered = kittenDataList
+        .filter((kitten) => kitten.desc.toLowerCase().includes(descrSearchText.toLowerCase()))
+        .filter(kitten => kitten.race.toLowerCase().includes(descrSearchRace.toLowerCase()));
+    console.log(kittenListFiltered);
+
+    renderKittenList(kittenListFiltered);
+
+
+    //Modifica el código:
+    //Haz un filter sobre el listado de gatitos
+    //Vuelve a pintar el listado de gatitos filtrados en el HTML.
+}
+searchButton.addEventListener('click', filterKitten);
 //Mostrar el litado de gatitos en ell HTML
 renderKittenList(kittenDataList);
 
