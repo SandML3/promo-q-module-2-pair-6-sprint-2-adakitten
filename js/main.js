@@ -15,6 +15,8 @@ const linkNewFormElememt = document.querySelector('.js-button-new-form');
 const labelMesageError = document.querySelector('.js-label-error');
 const input_search_desc = document.querySelector('.js_in_search_desc');
 const input_search_race = document.querySelector('.js_in_search_race');
+const GITHUB_USER = 'Csuau';
+const SERVER_URL = `https://adalab-api.herokuapp.com/api/kittens/${GITHUB_USER}`;
 
 //Objetos con cada gatito
 const kittenData_1 = {
@@ -36,10 +38,10 @@ const kittenData_3 = {
     race: "British Shorthair",
 };
 
-const kittenDataList = [kittenData_1, kittenData_2, kittenData_3];
-
+//const kittenDataList = [kittenData_1, kittenData_2, kittenData_3];
+let kittenDatalist = [];
 //Funciones
-function renderKitten (kittenData) {
+/*function renderKitten (kittenData) {
     const kitten = `<li class="card">
     <article>
       <img
@@ -136,7 +138,7 @@ function cancelNewKitten (event) {
 }*/
 
 //filtrar con filter
-function filterKitten (ev) {
+/*function filterKitten (ev) {
     ev.preventDefault();
     const descrSearchText = input_search_desc.value;
     const descrSearchRace = input_search_race.value;
@@ -163,8 +165,16 @@ linkNewFormElememt.addEventListener("click", handleClickNewCatForm);
 searchButton.addEventListener("click", filterKitten);
 buttonAdd.addEventListener("click", addNewKitten);
 buttonCancelForm.addEventListener("click", cancelNewKitten);
-
-
+*/
+fetch(SERVER_URL, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+}).then(response => console.log(response.json()))
+    .then(data => {
+        // kittenDatalist.push(data.results[0])
+        console.log(data.results);
+    });
+//Completa el código;
 
 
 
