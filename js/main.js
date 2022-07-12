@@ -39,14 +39,27 @@ const kittenData_3 = {
 };
 
 //const kittenDataList = [kittenData_1, kittenData_2, kittenData_3];
-let kittenDatalist = [];
+
+let kittenDataList = [];
+fetch(SERVER_URL, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+}).then(response => response.json())
+    .then(data => {
+        // kittenDatalist.push(data.results[0], data.results[1], data.results[2]);
+        data.results.forEach(kitten => {
+            kittenDataList.push(kitten);
+        });
+        renderKittenList(kittenDataList)
+    });
+
 //Funciones
-/*function renderKitten (kittenData) {
+function renderKitten (kittenData) {
     const kitten = `<li class="card">
     <article>
       <img
         class="card_img"
-        src=${kittenData.image}
+        src=${kittenData.url}
         alt="gatito"
       />
       <h3 class="card_title">${kittenData.name}</h3>
@@ -126,7 +139,7 @@ function cancelNewKitten (event) {
 }
 
 //Filtrar por descripción
-/*function filterKitten(event) {
+/*function filterKitten (event) {
     event.preventDefault();
     const descrSearchText = input_search_desc.value;
     listElement.innerHTML = "";
@@ -138,7 +151,7 @@ function cancelNewKitten (event) {
 }*/
 
 //filtrar con filter
-/*function filterKitten (ev) {
+function filterKitten (ev) {
     ev.preventDefault();
     const descrSearchText = input_search_desc.value;
     const descrSearchRace = input_search_race.value;
@@ -165,15 +178,10 @@ linkNewFormElememt.addEventListener("click", handleClickNewCatForm);
 searchButton.addEventListener("click", filterKitten);
 buttonAdd.addEventListener("click", addNewKitten);
 buttonCancelForm.addEventListener("click", cancelNewKitten);
-*/
-fetch(SERVER_URL, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-}).then(response => console.log(response.json()))
-    .then(data => {
-        // kittenDatalist.push(data.results[0])
-        console.log(data.results);
-    });
+
+
+
+
 //Completa el código;
 
 
