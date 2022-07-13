@@ -41,6 +41,38 @@ const kittenData_3 = {
 //const kittenDataList = [kittenData_1, kittenData_2, kittenData_3];
 
 let kittenDataList = [];
+
+const kittenListStored = JSON.parse(localStorage.getItem('kittensList'));
+
+const apiCallGET = () => {
+    fetch(SERVER_URL, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then(response => response.json())
+      .then(data => {
+          // kittenDatalist.push(data.results[0], data.results[1], data.results[2]);
+          data.results.forEach(kitten => {
+              kittenDataList.push(kitten);
+          });
+          localStorage.setItem('kittensList',JSON.stringify(kittenDataList));
+          renderKittenList(kittenDataList)
+
+        .catch((error) => console.error(error));
+      });  
+  }
+  
+
+if (kittenListStored === null) {
+    apiCallGET();
+}   else {
+    const kittenLS = JSON.parse(localStorage.getItem('kittensList'));
+    renderKittenList(kittenLS);
+}
+
+
+
+/* 
 fetch(SERVER_URL, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
@@ -51,7 +83,7 @@ fetch(SERVER_URL, {
             kittenDataList.push(kitten);
         });
         renderKittenList(kittenDataList)
-    });
+    }); */
 
 //Funciones
 function renderKitten (kittenData) {
@@ -103,6 +135,29 @@ const resetKittenForm = () => {
     inputRace.value = '';
 }
 
+const apiCallPost = (newKittenDataObject) => {
+    fetch(SERVER_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json,;charset=utf-8'},
+        body: JSON.stringify(newKittenDataObject),
+      })
+      .then((response) => response.json())
+      .then(data => console.log(data))
+      /* .then((data) => {
+        if (data.success) {
+          //Completa y/o modifica el código:
+          //Agrega el nuevo gatito al listado
+          //Guarda el listado actualizado en el local stoarge
+          //Visualiza nuevamente el listado de gatitos
+          //Limpia los valores de cada input
+        } else {
+          //muestra un mensaje de error.
+        } */
+      //})
+}
+
+
+
 
 function addNewKitten (event) {
     event.preventDefault();
@@ -128,6 +183,8 @@ function addNewKitten (event) {
             labelMesageError.innerHTML = "";
         }
     }
+
+    apiCallPost(newKittenDataObject);
 }
 //Cancelar la búsqueda de un gatito
 function cancelNewKitten (event) {
@@ -165,13 +222,14 @@ function filterKitten (ev) {
     renderKittenList(kittenListFiltered);
 
 
+
     //Modifica el código:
     //Haz un filter sobre el listado de gatitos
     //Vuelve a pintar el listado de gatitos filtrados en el HTML.
 }
 searchButton.addEventListener('click', filterKitten);
 //Mostrar el litado de gatitos en ell HTML
-renderKittenList(kittenDataList);
+// renderKittenList(kittenDataList);
 
 //Eventos
 linkNewFormElememt.addEventListener("click", handleClickNewCatForm);
@@ -182,7 +240,6 @@ buttonCancelForm.addEventListener("click", cancelNewKitten);
 
 
 
-//Completa el código;
 
 
 
