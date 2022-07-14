@@ -46,26 +46,26 @@ const kittenListStored = JSON.parse(localStorage.getItem('kittensList'));
 
 const apiCallGET = () => {
     fetch(SERVER_URL, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
     })
-      .then(response => response.json())
-      .then(data => {
-          // kittenDatalist.push(data.results[0], data.results[1], data.results[2]);
-          data.results.forEach(kitten => {
-              kittenDataList.push(kitten);
-          });
-          localStorage.setItem('kittensList',JSON.stringify(kittenDataList));
-          renderKittenList(kittenDataList)
+        .then(response => response.json())
+        .then(data => {
+            // kittenDatalist.push(data.results[0], data.results[1], data.results[2]);
+            data.results.forEach(kitten => {
+                kittenDataList.push(kitten);
+            });
+            localStorage.setItem('kittensList', JSON.stringify(kittenDataList));
+            renderKittenList(kittenDataList)
 
-        .catch((error) => console.error(error));
-      });  
-  }
-  
+                .catch((error) => console.error(error));
+        });
+}
+
 
 if (kittenListStored === null) {
     apiCallGET();
-}   else {
+} else {
     const kittenLS = JSON.parse(localStorage.getItem('kittensList'));
     renderKittenList(kittenLS);
 }
@@ -87,21 +87,40 @@ fetch(SERVER_URL, {
 
 //Funciones
 function renderKitten (kittenData) {
-    const kitten = `<li class="card">
-    <article>
-      <img
-        class="card_img"
-        src=${kittenData.url}
-        alt="gatito"
-      />
-      <h3 class="card_title">${kittenData.name}</h3>
-      <h3 class="card_race">${kittenData.race}</h3>
-      <p class="card_description">
-      ${kittenData.desc}
-      </p>
-    </article>
-    </li>`;
-    return kitten;
+    console.log(kittenData);
+    const listKitten = document.querySelector('.js-list');
+    const kitten = document.createElement("li");
+    const articleK = document.createElement("article");
+    const imgKitten = document.createElement("img");
+    imgKitten.setAttribute("src", kittenData.image);
+
+    const name = document.createElement("h3");
+    const nameK = document.createTextNode(kittenData.name);
+    name.appendChild(nameK);
+    const race = document.createElement("h3");
+    const raceK = document.createTextNode(kittenData.race);
+    race.appendChild(raceK);
+    const desc = document.createElement("p");
+    const descK = document.createTextNode(kittenData.desc);
+    desc.appendChild(descK);
+    kitten.appendChild(articleK);
+    listKitten.appendChild(kitten);
+
+    /* const kitten = `<li class="card">
+     <article>
+       <img
+         class="card_img"
+         src=${kittenData.url}
+         alt="gatito"
+       />
+       <h3 class="card_title">${kittenData.name}</h3>
+       <h3 class="card_race">${kittenData.race}</h3>
+       <p class="card_description">
+       ${kittenData.desc}
+       </p>
+     </article>
+     </li>`;*/
+    // return kitten;
 }
 
 function renderKittenList (kittenDataList) {
@@ -138,22 +157,22 @@ const resetKittenForm = () => {
 const apiCallPost = (newKittenDataObject) => {
     fetch(SERVER_URL, {
         method: 'POST',
-        headers: {'Content-Type': 'application/json,;charset=utf-8'},
+        headers: { 'Content-Type': 'application/json,;charset=utf-8' },
         body: JSON.stringify(newKittenDataObject),
-      })
-      .then((response) => response.json())
-      .then(data => console.log(data))
-      /* .then((data) => {
-        if (data.success) {
-          //Completa y/o modifica el código:
-          //Agrega el nuevo gatito al listado
-          //Guarda el listado actualizado en el local stoarge
-          //Visualiza nuevamente el listado de gatitos
-          //Limpia los valores de cada input
-        } else {
-          //muestra un mensaje de error.
-        } */
-      //})
+    })
+        .then((response) => response.json())
+        .then(data => console.log(data))
+    /* .then((data) => {
+      if (data.success) {
+        //Completa y/o modifica el código:
+        //Agrega el nuevo gatito al listado
+        //Guarda el listado actualizado en el local stoarge
+        //Visualiza nuevamente el listado de gatitos
+        //Limpia los valores de cada input
+      } else {
+        //muestra un mensaje de error.
+      } */
+    //})
 }
 
 
